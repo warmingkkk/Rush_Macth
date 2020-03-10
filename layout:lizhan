@@ -1,0 +1,172 @@
+public static void main(String[] args) {
+		
+		class ColorBox extends Component
+		{
+		    protected Color color;
+		    
+		    protected ColorBox (Color color)
+		    {
+		        this.color = color;
+		    }
+		    
+		    public void update (Graphics g)
+		    {
+		        paint (g);
+		    }
+		    
+		    public void paint (Graphics g)
+		    {
+		        Dimension d = getSize();
+		        g.setColor (Color.black);
+		        g.drawRect (0, 0, d.width - 1, d.height - 1);
+		        
+		        g.setColor (color);
+		        g.fillRect (1, 1, d.width - 1, d.height - 1);
+		    }
+		    
+		    public Dimension getPreferredSize ()
+		    {
+		        return new Dimension(40, 20);
+		    }
+		}
+		
+			//  创建一个窗口。
+			Frame frame = new Frame("responder");
+			frame.setBounds (100 , 100, 900, 550);
+			//frame.show();
+			//测试用
+			
+			//创建一个容器。
+			//Container pane = getContentPane();
+			
+			//设置背景颜色。
+			frame.setBackground(Color.black); 
+			
+			//在这个窗口创建一个网格。	
+			double border_col = 8;
+			double border_row = 11;
+			double size[][] =
+					{
+							//0        ,1         ,2               ,3   			,4				 ,5				  ,6			   ,7				,8	             ,9              ,10
+							{border_col,border_col,TableLayout.FILL,TableLayout.FILL,TableLayout.FILL,TableLayout.FILL,TableLayout.FILL,TableLayout.FILL,border_col      ,border_col      ,0.21}, //列
+							{border_row,40        ,25		       ,21              ,TableLayout.FILL,TableLayout.FILL,border_row      ,border_row      ,TableLayout.FILL,TableLayout.FILL,border_row} //行
+					};
+			TableLayout layout = new TableLayout(size);
+			frame.setLayout(layout);
+			
+			//创建一些按钮和标签。
+			String Button[] = {"选择试卷","查看规则","开始抢答","下一题"};
+			String Label[] = {"组一成绩:","组二成绩:","组三成绩:","未开始抢答","题目:","选项:"};
+			int Point[] = {0,0,0};
+			Button button[] = new Button[Button.length];
+			JLabel label[] = new JLabel[Label.length];
+			JLabel point[] = new JLabel[Point.length];
+			
+
+			//编辑字体
+			Font  B = new Font("宋体",Font.PLAIN,30);
+			Font  L1 = new Font("宋体",Font.PLAIN,24);
+			Font  L2 = new Font("宋体",Font.PLAIN,34);
+			
+			//分数累计。
+			
+			//写入文本数组。
+			for (int i = 0;i < Button.length;i++)
+			{
+				button[i] = new Button(Button[i]);
+			}
+			
+			for (int j = 0;j < Label.length;j++)
+			{
+				label[j] = new JLabel(Label[j]);
+			}
+			
+			for (int n = 0;n < Point.length;n++)
+			{
+				String s = String.valueOf(Point[n]);
+				point[n] = new JLabel(s);
+			}
+			
+			//应用字体。
+			//按钮字体。
+			button[0].setFont(B);
+			button[0].setForeground(Color.white);
+			button[1].setFont(B);
+			button[1].setForeground(Color.white);
+			button[2].setFont(B);
+			button[2].setForeground(Color.white);
+			button[3].setFont(B);
+			button[3].setForeground(Color.white);
+			
+			//组名字体。
+			label[0].setFont(L1);
+			label[1].setFont(L1);
+			label[2].setFont(L1);
+			
+			//分数字体。
+			point[0].setFont(L1);
+			point[1].setFont(L1);
+			point[2].setFont(L1);
+			
+			//其他字体。
+			label[3].setFont(L2);
+			label[3].setForeground(Color.red);
+			label[4].setFont(L1);
+			label[5].setFont(L1);
+			
+			//添加按钮。
+			frame.add(button[0],"10,4"); //选择试卷
+			frame.add(button[1],"10,5"); //查看规则
+			frame.add(button[2],"10,8"); //开始抢答
+			frame.add(button[3],"10,9"); //下一题
+			
+			//编辑按钮。
+			button[0].setBackground(Color.blue);
+			button[1].setBackground(Color.blue);
+			button[2].setBackground(Color.blue);
+			button[3].setBackground(Color.blue);
+			
+			//添加标签。
+			frame.add(label[0],"2,0,3,1");  //组一成绩
+			frame.add(label[1],"4,0,5,1");  //组二成绩
+			frame.add(label[2],"6,0,7,1");  //组三成绩
+			frame.add(label[3],"10,1,10,2");//未开始抢答
+			frame.add(label[4],"2,3,2,6");  //题目
+			frame.add(label[5],"2,7,2,10"); //选项
+			
+			//添加分数。
+			frame.add(point[0],"2,2,3,2");  //组一分数
+			frame.add(point[1],"4,2,5,2");  //组二分数
+			frame.add(point[2],"6,2,7,2");  //组三分数
+			
+			//编辑标签和分数.
+			frame.add(new ColorBox(Color.yellow),"2,0,3,2"); //组一及其分数
+			frame.add(new ColorBox(Color.yellow),"4,0,5,2"); //组二及其分数
+			frame.add(new ColorBox(Color.yellow),"6,0,7,2"); //组三及其分数
+			frame.add(new ColorBox(Color.gray),"0,0,1,10");  //左侧边缘
+			frame.add(new ColorBox(Color.gray),"2,3,2,6");   //题目标签框
+			frame.add(new ColorBox(Color.gray),"2,7,2,10");  //选项标签框
+			frame.add(new ColorBox(Color.gray),"3,3,7,6");   //题目显示框 
+			frame.add(new ColorBox(Color.gray),"3,7,7,10");  //题目显示框
+			frame.add(new ColorBox(Color.gray),"8,0,9,10");  //右侧边缘
+			frame.add(new ColorBox(Color.gray),"10,0");      //上方边缘
+			frame.add(new ColorBox(Color.gray),"10,1,10,2"); //未开始抢答
+			frame.add(new ColorBox(Color.gray),"10,3,10,4"); //右上方边缘
+			frame.add(new ColorBox(Color.gray),"10,6");      //中间边缘（上方）
+			frame.add(new ColorBox(Color.gray),"10,7");      //中间边缘（下方）
+			frame.add(new ColorBox(Color.gray),"10,10");     //下方边缘
+			
+			//添加窗口关闭。
+			frame.addWindowListener
+	        (new WindowAdapter()
+	            {
+	                public void windowClosing (WindowEvent e)
+	                {
+	                    System.exit (0);
+	                }
+	            }
+	        );
+			
+			//显示窗口。
+			frame.show();
+		}
